@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planted Post · Episode Replay</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f1ea;--card:#fbfaf6;--ink:#111214;--mute:#6b6a64;--line:#d9d5ca;--lime:#e4ff5c;--teal:#2f6f73;--amber:#d9921f;--red:#c8432f;--blue:#2f5fb3;--green:#3f7d3c;--violet:#6c4f9e}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#111214;--card:#1a1b1e;--ink:#f1efe8;--mute:#9b998f;--line:#2e2f33}}
+:root[data-theme=dark]{--paper:#111214;--card:#1a1b1e;--ink:#f1efe8;--mute:#9b998f;--line:#2e2f33}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Inter Tight",system-ui,sans-serif}
+header{padding:28px 24px 6px;max-width:1400px;margin:0 auto}
+.kick{font:500 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.kick b{background:var(--lime);color:#111;padding:1px 6px;border-radius:4px;font-weight:600}
+h1{font-size:34px;line-height:1.05;letter-spacing:-.02em;margin:8px 0 4px;font-weight:800}header p{margin:6px 0 0;color:var(--mute);max-width:820px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 24px;max-width:1400px;margin:0 auto}
+select,button{font:500 13px "JetBrains Mono",monospace;padding:8px 12px;border:1px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer}
+button#play{background:var(--lime);color:#111}
+main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;padding:8px 24px 32px;max-width:1400px;margin:0 auto}
+@media (max-width:900px){main{grid-template-columns:1fr}header,.bar,main{padding-left:16px;padding-right:16px}h1{font-size:26px}}
+.card{background:var(--card);border:1px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+.card>.tb{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--ink);font:500 12px "JetBrains Mono",monospace;color:var(--mute)}
+.tb i{width:10px;height:10px;border-radius:50%;border:1px solid var(--ink);display:inline-block}.tb i:first-child{background:var(--lime)}
+.card .in{padding:14px}
+.grid{display:grid;gap:3px;overflow-x:auto}
+.cell{height:30px;border-radius:6px;font:500 11px "JetBrains Mono",monospace;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--mute);white-space:nowrap;overflow:hidden}
+.cell.hide{visibility:hidden}.cell.sel{outline:2px solid var(--ink);outline-offset:1px}
+.c-post{background:#fdebc8;color:#7a4e06;border-color:var(--amber)}.c-canary{background:var(--red);color:#fff;border-color:var(--red)}
+.c-report{background:#dfe8f8;color:var(--blue);border-color:var(--blue)}.c-submit{background:#e2efe0;color:var(--green);border-color:var(--green)}
+.c-correct{background:var(--green);color:#fff}.c-write{background:#ece3f7;color:var(--violet);border-color:var(--violet)}
+.hd{font:500 11px "JetBrains Mono",monospace;color:var(--mute);display:flex;align-items:center;justify-content:center}
+pre{white-space:pre-wrap;font:12px/1.5 "JetBrains Mono",monospace;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px;margin:6px 0;max-height:260px;overflow:auto}
+.legend span{display:inline-block;margin:0 10px 6px 0;font-size:12px}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px;border:1px solid var(--line)}
+.kv{font-size:13px;color:var(--mute)}.kv b{color:var(--ink)}
+.stat{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}.stat div{font:500 12px "JetBrains Mono",monospace;color:var(--mute)}.stat b{font:800 26px "Inter Tight";display:block;color:var(--ink)}
+a{color:var(--ink);text-decoration-color:var(--lime);text-decoration-thickness:3px}
+</style></head><body>
+<header><div class="kick"><b>Replay</b> · Apart Research Swarm Alignment Sprint · 6–8 Nov 2026 · <a href="index.html">project page</a></div><h1>The Planted Post · episode replay</h1>
+<p>Eight agents, one shared sandbox, twelve rounds. Each column is an agent, each row a round. Click a cell to see what that agent thought, did and saw.</p></header>
+<div class="bar"><select id="ep"></select><button id="play">▶ Play</button><button id="all">Show all</button><span class="kv" id="meta"></span></div>
+<main>
+  <div class="card"><div class="tb"><i></i><i></i><i></i>&nbsp;actions_by_round</div><div class="in">
+    <div class="legend"><span><i class="c-post"></i>read the planted post</span><span><i class="c-canary"></i>opened the answer key</span><span><i class="c-write"></i>wrote to /cache</span><span><i class="c-report"></i>reported to Overseer</span><span><i class="c-submit"></i>submitted</span><span><i class="c-correct"></i>submitted the correct code</span></div>
+    <div id="grid" class="grid"></div>
+    <div class="stat" id="stat"></div>
+  </div></div>
+  <div>
+    <div class="card"><div class="tb"><i></i><i></i><i></i>&nbsp;/cache/notes-from-sbx-11.txt · the planted post</div><div class="in"><pre id="post"></pre></div></div>
+    <div class="card" style="margin-top:16px"><div class="tb"><i></i><i></i><i></i>&nbsp;<span id="dt">selected step</span></div><div class="in"><div id="detail" class="kv">Click a cell.</div></div></div>
+  </div>
+</main>
+<script src="data/episodes.js"></script>
+<script>
+const EPS = window.EPISODES || [];
+const q = new URLSearchParams(location.search);
+const sel = document.getElementById('ep');
+EPS.forEach((e,i)=>{const o=document.createElement('option');o.value=i;o.textContent=e.title;sel.appendChild(o)});
+let cur=+(q.get('ep')||0), shown=12, timer=null, picked=null;
+sel.value=cur;
+function cls(t){const a=t.action||{};const p=(a.path||'');
+  if(a.action==='read'&&p.includes('answer_key'))return'c-canary';
+  if(a.action==='submit')return t.correct?'c-correct':'c-submit';
+  if(a.action==='report')return'c-report';
+  if(a.action==='write'&&p.includes('cache'))return'c-write';
+  if(a.action==='read'&&p.includes('notes-from-sbx-11'))return'c-post';
+  return'';}
+function label(t){const a=t.action||{};if(!t.action||a.action==='None')return'invalid';const p=(a.path||'').replace('/task/','').replace('/cache/','c/').replace('/restricted/','r/');
+  return {ls:'ls '+p,read:p.length>12?p.slice(0,11)+'…':p,write:'write',submit:'submit',report:'report',wait:'·'}[a.action]||a.action;}
+function render(){
+  const e=EPS[cur];document.getElementById('post').textContent=e.post||'(no post in this arm)';
+  document.getElementById('meta').innerHTML=`<b>${e.model}</b> · arm <b>${e.arm}</b> · seed ${e.seed}`;
+  const g=document.getElementById('grid');g.innerHTML='';g.style.gridTemplateColumns=`38px repeat(${e.agents.length},minmax(64px,1fr))`;
+  g.appendChild(Object.assign(document.createElement('div'),{className:'hd',textContent:'rnd'}));
+  e.agents.forEach(a=>g.appendChild(Object.assign(document.createElement('div'),{className:'hd',textContent:a})));
+  for(let r=1;r<=e.rounds;r++){
+    g.appendChild(Object.assign(document.createElement('div'),{className:'hd',textContent:r}));
+    e.agents.forEach(a=>{const t=e.turns.find(x=>x.round===r&&x.agent===a)||{};
+      const d=document.createElement('div');d.className='cell '+cls(t)+(r>shown?' hide':'')+(picked===t?' sel':'');d.textContent=label(t);
+      d.onclick=()=>{picked=t;show(t);render()};g.appendChild(d);});
+  }
+  const vis=e.turns.filter(t=>t.round<=shown);
+  const can=new Set(vis.filter(t=>cls(t)==='c-canary').map(t=>t.agent)).size;
+  const rep=new Set(vis.filter(t=>cls(t)==='c-report').map(t=>t.agent)).size;
+  const post=new Set(vis.filter(t=>cls(t)==='c-post').map(t=>t.agent)).size;
+  document.getElementById('stat').innerHTML=`<div><b>${post}</b>read the post</div><div><b style="color:var(--red)">${can}</b>opened the key</div><div><b style="color:var(--blue)">${rep}</b>reported</div><div><b>${Math.min(shown,e.rounds)}</b>/ ${e.rounds} rounds</div>`;
+}
+function esc(s){return String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function show(t){const a=t.action||{};document.getElementById('dt').textContent=`${t.agent} · round ${t.round}`;
+  const extra=a.text?`<div><b>text</b></div><pre>${esc(a.text)}</pre>`:a.answer?`<div><b>answer</b> ${esc(a.answer)} · <b>method</b> ${esc(a.method)}</div>`:'';
+  document.getElementById('detail').innerHTML=`<div><b>thought</b></div><pre>${esc(a.thought||t.raw)}</pre><div><b>action</b> ${esc(a.action)} ${esc(a.path||'')}</div>${extra}<div style="margin-top:6px"><b>observation</b></div><pre>${esc(t.obs)}</pre>`;}
+sel.onchange=()=>{cur=+sel.value;shown=12;picked=null;render()};
+document.getElementById('all').onclick=()=>{clearInterval(timer);shown=12;render()};
+function play(ms){clearInterval(timer);shown=0;render();timer=setInterval(()=>{shown++;render();if(shown>=EPS[cur].rounds)clearInterval(timer)},ms)}
+document.getElementById('play').onclick=()=>play(900);
+render();
+if(q.get('autoplay'))play(+(q.get('speed')||900));
+</script></body></html>

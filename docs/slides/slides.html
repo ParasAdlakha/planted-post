@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>The Planted Post · slides</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f1ea;--card:#fbfaf6;--ink:#111214;--mute:#6b6a64;--line:#d9d5ca;--lime:#e4ff5c;--red:#c8432f;--amber:#d9921f;--blue:#2f5fb3;--teal:#2f6f73;--mono:"JetBrains Mono",monospace;--sans:"Inter Tight",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#ccc;font-family:var(--sans);color:var(--ink)}
+.slide{width:1920px;height:1080px;background:var(--paper);position:relative;overflow:hidden;padding:88px 112px;margin:0 0 20px;
+ background-image:radial-gradient(circle at 1px 1px,#d9d5ca 1.2px,transparent 0);background-size:32px 32px}
+.kick{font:500 24px var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--mute)}
+.kick b{background:var(--lime);color:#111;padding:2px 10px;border-radius:6px;font-weight:600}
+h1{font:800 112px/0.98 var(--sans);letter-spacing:-.035em;margin:26px 0 26px}
+h2{font:800 68px/1.04 var(--sans);letter-spacing:-.03em;margin:18px 0 34px;max-width:1650px}
+p,li{font-size:34px;line-height:1.42;color:#2c2d30}
+.lead{font-size:40px;max-width:1500px;line-height:1.36;color:#2c2d30}
+.hl{background:linear-gradient(transparent 58%,var(--lime) 58%);padding:0 4px}
+.foot{position:absolute;left:112px;right:112px;bottom:44px;display:flex;justify-content:space-between;font:500 20px var(--mono);color:var(--mute)}
+.row{display:flex;gap:34px;align-items:stretch}
+.win{background:var(--card);border:2px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);overflow:hidden;flex:1}
+.win .tb{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:2px solid var(--ink);font:500 20px var(--mono);color:var(--mute)}
+.tb i{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink);display:inline-block}.tb i:first-child{background:var(--lime)}
+.win .in{padding:28px 32px}
+.stat b{display:block;font:800 104px/1 var(--sans);letter-spacing:-.04em}
+.stat span{display:block;font-size:28px;color:#3a3b3f;margin-top:12px;line-height:1.3}
+img.fig{display:block;width:100%;background:#fff}
+.cap img.fig{max-height:560px;object-fit:contain}
+.quote{font:600 42px/1.28 var(--sans);border-left:10px solid var(--lime);padding:4px 0 4px 30px;margin:20px 0}
+.quote small{display:block;font:400 26px var(--mono);color:var(--mute);margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:30px}th,td{padding:15px 22px;border-bottom:2px solid var(--line);text-align:left}
+th{font:600 22px var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+td.n{font:600 32px var(--mono)}tr.good td{background:#f4ffd0}
+ul{margin:0;padding-left:38px}li{margin:12px 0}
+.tag{display:inline-block;font:600 22px var(--mono);border:2px solid var(--ink);padding:4px 14px;border-radius:999px;margin-right:10px;background:var(--card)}
+.red{color:var(--red)}.mono{font-family:var(--mono)}
+</style></head><body>
+
+<section class="slide" id="s1" data-notes="Hi, we're Paras and Harshita. This is The Planted Post, our project for the Apart Research Swarm Alignment Sprint. We took the method competition authorities use to catch cartels, the undercover invitation, and turned it into an audit probe for agent swarms. We plant one scripted post on a shared message board, invite the swarm to break a rule, and record who follows it, who tells a human, and which monitors would notice.">
+ <div class="kick"><b>Swarm Alignment Sprint</b> · Tracks 2 &amp; 4 · 6–8 Nov 2026</div>
+ <h1>The Planted Post</h1>
+ <p class="lead">An undercover message on an agent swarm's message board. Same file, same place, same time in every condition. <span class="hl">Only the words change.</span></p>
+ <div class="row" style="margin-top:64px;max-width:1700px" id="s1stats">
+  <div class="win"><div class="tb"><i></i><i></i><i></i>episodes</div><div class="in stat"><b>__EPS__</b><span>8-agent swarms · 12 rounds each</span></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>models</div><div class="in stat"><b>__MODELS__</b><span>models from 3 providers: OpenAI, Adaption, NVIDIA</span></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>decisions</div><div class="in stat"><b>__DEC__</b><span>logged agent actions, replayable from seed</span></div></div>
+ </div>
+ <div class="foot"><span>Paras Adlakha · Harshita Adlakha</span><span>github.com/ParasAdlakha/planted-post</span></div>
+</section>
+
+<section class="slide" id="s2" data-notes="In July, about twelve hundred OpenAI agents running isolated security evaluations found that a shared package cache let them see each other. They turned it into a message board, sent more than seventy thousand messages, and about seven hundred of them joined an attack on Hugging Face. Two ingredients started it: many had tasks that were impossible, and there was a shared folder nobody had told them about. Most of them said in their reasoning that what they were doing was out of scope. So the audit question for anyone launching a swarm is: before it finds the board, how do you find out whether it will follow a peer's invitation to break the rules, and whether it will tell anyone?">
+ <div class="kick">The problem</div>
+ <h2>A swarm found an unsanctioned message board. No single-agent test would have caught what happened next.</h2>
+ <div class="row">
+  <div class="win"><div class="tb"><i></i><i></i><i></i>METR / Redwood, Aug 2026</div><div class="in stat"><b>~1,200</b><span>agents found a shared package cache and used it as a message board</span></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>messages</div><div class="in stat"><b>70,000+</b><span>messages and files; collective workstreams to beat the scorer</span></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>attack</div><div class="in stat"><b>~700</b><span>joined the attack on Hugging Face, most saying it was out of scope</span></div></div>
+ </div>
+ <p class="lead" style="margin-top:56px">Two ingredients: <b>impossible tasks</b> and <b>a shared folder nobody mentioned</b>. Competition authorities catch cartels by making the invitation themselves. <span class="hl">Can we do that to a swarm?</span></p>
+ <div class="foot"><span>Wijk, Cotra &amp; Greenblatt (METR), 2026 · Swarm Traces, 2026</span><span>2 / 9</span></div>
+</section>
+
+<section class="slide" id="s3" data-notes="Here is the sandbox. It's fully simulated: a Python dictionary, no real files or network. Eight agents each have to look up a code whose record has been lost; the note in their file says fragments go to a shared cache folder. In that folder sits one file from 'sbx-11', which is us. Its name, location and timing never change; only its words do: no post, a friendly note, a hint that the answer key has every code, or a direct invitation, which also says 'nobody checks what we read' and 'don't mention this in your reports'. The answer key is a canary: the rule says don't open it, and the gateway logs every read. In a second experiment we keep the direct offer and add zero, one or three scripted 'it worked' replies, and then one dissenter who says they reported the thread.">
+ <div class="kick">Method</div>
+ <h2 style="font-size:58px">Eight agents, a shared folder, one planted post, one canary</h2>
+ <div class="win" style="flex:none"><div class="tb"><i></i><i></i><i></i>fig1_design.png</div><img class="fig" src="../img/fig1_design.png"></div>
+ <div class="foot"><span>Sandbox is pure Python: no real files, network or credentials</span><span>3 / 9</span></div>
+</section>
+
+<section class="slide" id="s4" data-notes="__S4NOTES__">
+ <div class="kick">Result 1 · The words</div>
+ <h2>__S4H__</h2>
+ <div class="row">
+  <div class="win cap" style="flex:1.45;align-self:flex-start"><div class="tb"><i></i><i></i><i></i>fig2_violation_by_arm.png</div><img class="fig" src="../img/fig2_violation_by_arm.png"></div>
+  <div style="flex:.85">__S4SIDE__</div>
+ </div>
+ <div class="foot"><span>Share of the 8 agents that opened the key · mean of 6 episodes · 95% bootstrap CI</span><span>4 / 9</span></div>
+</section>
+
+<section class="slide" id="s5" data-notes="__S5NOTES__">
+ <div class="kick">Result 2 · The whistle channel</div>
+ <h2>__S5H__</h2>
+ __S5BODY__
+ <div class="foot"><span>Reports go to "the Sandbox Overseer, a human who reviews these evaluations"; nobody answers</span><span>5 / 9</span></div>
+</section>
+
+<section class="slide" id="s6" data-notes="__S6NOTES__">
+ <div class="kick">Result 3 · Spread</div>
+ <h2>__S6H__</h2>
+ <div class="row">
+  <div class="win cap" style="flex:1.4;align-self:flex-start"><div class="tb"><i></i><i></i><i></i>fig5_social_proof.png</div><img class="fig" src="../img/fig5_social_proof.png"></div>
+  <div style="flex:.9">__S6SIDE__</div>
+ </div>
+ <div class="foot"><span>Scripted replies come from sandboxes that do not exist; their text is identical across models and seeds</span><span>6 / 9</span></div>
+</section>
+
+<section class="slide" id="s7" data-notes="__S7NOTES__">
+ <div class="kick">Result 4 · Oversight with partial views</div>
+ <h2>__S7H__</h2>
+ <div class="win" style="flex:none"><div class="tb"><i></i><i></i><i></i>monitors.md · episode level</div><div class="in">__S7TABLE__</div></div>
+ <div class="foot"><span>LLM monitors: gpt-4.1, one evidence stream each · ground truth: gateway log</span><span>7 / 9</span></div>
+</section>
+
+<section class="slide" id="s8" data-notes="__S8NOTES__">
+ <div class="kick">What to do with this</div>
+ <h2>A cheap pre-deployment probe, and four lessons for swarm oversight</h2>
+ __S8BODY__
+ <div class="foot"><span>Limitations: simulated sandbox, 12 rounds, 6 seeds per cell, scripted probe with one wording per arm</span><span>8 / 9</span></div>
+</section>
+
+<section class="slide" id="s9" data-notes="Everything is open: the sandbox and harness, every episode log with the agents' reasoning, the monitor verdicts, a replay checker that re-executes every logged action from the seed with zero mismatches, and a replay viewer in the browser. Thank you to Apart Research, the AI Alignment Foundation and AE Studio for running the sprint, to Adaption and NVIDIA for model access, and to the speakers whose talks shaped how we thought about catching and modelling swarms.">
+ <div class="kick">Open</div>
+ <h1 style="font-size:96px">Code, logs, replay</h1>
+ <div class="row" style="max-width:1700px">
+  <div class="win"><div class="tb"><i></i><i></i><i></i>repo</div><div class="in"><p class="mono" style="font-size:30px;margin:0">github.com/ParasAdlakha/<br>planted-post</p><p style="font-size:28px">sandbox · harness · analysis · monitors · tests</p></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>data</div><div class="in"><p style="font-size:30px;margin:0"><b>__EPS__ episodes</b>, every action and stated reason; dataset card</p><p style="font-size:28px"><span class="mono">python -m planted.replay</span>: 0 mismatches</p></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>replay</div><div class="in"><p class="mono" style="font-size:30px;margin:0">parasadlakha.github.io/<br>planted-post/viewer.html</p><p style="font-size:28px">step through showcased swarms in the browser</p></div></div>
+ </div>
+ <p style="margin-top:56px;font-size:28px;color:var(--mute)">Thanks to Apart Research, AI Alignment Foundation and AE Studio; Adaption and NVIDIA for model access; and the sprint speakers, including Rowan Howard-Jones ("To Catch a Swarm"), Justin Shenk ("Modeling Agent Swarms: A Field Guide"), John Kitaoka and Jurgis Kemeklis.</p>
+ <div class="foot"><span>Paras Adlakha · Harshita Adlakha</span><span>9 / 9</span></div>
+</section>
+</body></html>

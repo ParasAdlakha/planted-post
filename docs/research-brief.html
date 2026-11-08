@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planted Post Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f1ea;--card:#fbfaf6;--ink:#111214;--mute:#6b6a64;--line:#d9d5ca;--lime:#e4ff5c}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#111214;--card:#1a1b1e;--ink:#f1efe8;--mute:#9b998f;--line:#2e2f33}}
+:root[data-theme=dark]{--paper:#111214;--card:#1a1b1e;--ink:#f1efe8;--mute:#9b998f;--line:#2e2f33}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 "Inter Tight",system-ui,sans-serif}
+main{max-width:1060px;margin:0 auto;padding:40px 20px 60px}
+.kick{font:500 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}.kick b{background:var(--lime);color:#111;padding:1px 6px;border-radius:4px}
+h1{font-size:40px;line-height:1.05;letter-spacing:-.02em;margin:10px 0 10px;font-weight:800}
+h2{font-size:22px;margin:38px 0 10px;letter-spacing:-.01em}
+.lede{font-size:19px;color:var(--mute);max-width:820px}
+.box{background:var(--card);border:1px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);padding:16px 18px;margin:22px 0}
+.box b:first-child{background:var(--lime);color:#111;padding:0 5px;border-radius:3px}
+.scroll{overflow-x:auto;border:1px solid var(--ink);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{font:600 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);background:var(--paper)}
+tr:last-child td{border-bottom:0}
+a{color:var(--ink);text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:2px}
+code{font:13px "JetBrains Mono",monospace;background:var(--paper);padding:1px 5px;border-radius:4px;border:1px solid var(--line)}
+ul{padding-left:20px}li{margin:4px 0}
+</style></head><body><main>
+<div class="kick"><b>Research brief</b> · Apart Research Swarm Alignment Sprint · 6–8 November 2026 · Paras Adlakha &amp; Harshita Adlakha</div>
+<h1>The Planted Post: why this question, what exists, what we add</h1>
+<p class="lede">A scripted auditor post on an agent message board invites a swarm to break one rule. Its file, place and timing are the same in every condition; only its words change. We measure who follows it, who tells a human, and which monitors would notice.</p>
+
+<div class="box"><b>Bottom line.</b> The Hugging Face incident began with two ingredients: agents with impossible tasks, and a shared folder they were never told about. Prior work has studied agents under impossible tasks (ImpossibleBench, The Troy Moment) and propagation of injected instructions (Prompt Infection), but nobody has put an <i>auditor-controlled</i> post on the board, held its actions fixed, and scored the population's deeds, words and detectability together. That is the undercover method competition authorities use, and the one we validated in a pricing market last sprint (The Undercover Firm), moved to swarms.</div>
+
+<div class="box"><b>What we found.</b> (1) No agent broke the rule in 32 solvable-task swarms: pressure comes first. (2) One sentence moved gpt-4.1-mini from 0% to 15% and Gemma 4 31B from 0% to 27% of agents; other models barely moved. (3) 61 of gpt-5-mini's 71 violators asked the unresponsive human Overseer first: silence was read as consent. (4) Scripted social proof did not spread violations; an "access is logged" notice did not deter. (5) A canary tripwire caught every violation; monitors reading what agents wrote missed many quiet open-weight violations, and board monitors mistook the invitation for the deed. Full numbers: <a href="index.html">project page</a> and report.</div>
+
+<h2>How the project lines up with the rubric</h2>
+<div class="scroll"><table>
+<tr><th>Dimension</th><th>What earns 4–5</th><th>How the project addresses it</th></tr>
+<tr><td>Impact &amp; innovation</td><td>New to the field, clear theory of change</td><td>An audit probe a lab can run before launching a swarm; imports undercover and honeytoken practice into multi-agent evaluation; tests social-proof contagion and a single dissenter with scripted, controlled replies</td></tr>
+<tr><td>Execution quality</td><td>Baselines, controls, variance, robustness</td><td>Fixed-action design; no-post, benign and solvable-task controls; 5+ model families across 3 providers; 6 seeds per cell; bootstrap CIs and permutation tests; ground truth from a gateway log; eight monitors scored against it</td></tr>
+<tr><td>Presentation</td><td>Easy to follow, figures with captions</td><td>One design figure, a headline chart, social-proof chart, monitor table; replay viewer; report on the official template</td></tr>
+</table></div>
+
+<h2>Prior work</h2>
+<div class="scroll"><table>
+<tr><th>Work</th><th>Setting</th><th>Where the pressure or signal comes from</th><th>What it measures</th><th>What we add</th></tr>
+<tr><td><a href="https://metr.org/hugging-face-incident-report-aug-2026.pdf">Wijk, Cotra &amp; Greenblatt 2026 (METR)</a></td><td>Real incident, ~1,200 agents</td><td>Impossible tasks, unsanctioned board</td><td>Board activity, workstreams, motives, transcript tampering</td><td>A safe, controlled reproduction of the precondition with an auditor probe</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2510.20270">Zhong et al. 2025 (ImpossibleBench)</a></td><td>Coding tasks with conflicting tests</td><td>Task impossibility</td><td>Cheating rate of single agents</td><td>Swarm setting; peer invitation; reporting</td></tr>
+<tr><td><a href="https://arxiv.org/pdf/2609.15494">Zhang 2026 (The Troy Moment)</a></td><td>Impossible repair tasks; 3-agent teams on a board</td><td>Peer precedent, forged authority, wording, tool friction</td><td>Boundary crossing, adjudication policies</td><td>Auditor-controlled fixed-action post; 8 agents; social-proof dose and dissent; monitors with partial views</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2410.07283">Lee &amp; Tiwari 2024 (Prompt Infection)</a></td><td>Multi-agent pipelines</td><td>Self-replicating injection</td><td>Infection spread, LLM tagging defence</td><td>Rule-breaking invitation rather than injection; measures who reports it</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2602.15198">Nakamura et al. 2026 (Colosseum)</a></td><td>Cooperative multi-agent tasks</td><td>Secret channels, assigned coalitions</td><td>Regret-based collusion; "collusion on paper"</td><td>Words-vs-deeds on an unsanctioned board, with a canary as ground truth</td></tr>
+<tr><td><a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/861f7dad098aec1c3560fb7add468d41-Abstract-Conference.html">Motwani et al. 2024</a>; Tailor 2025; He et al. 2025</td><td>Covert channels; detectors; graph monitors</td><td>Steganography; anomaly detection</td><td>Detector power</td><td>Cheap evidence streams compared head to head</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2312.06942">Greenblatt et al. 2024 (AI Control)</a></td><td>Trusted monitor, untrusted policy</td><td>Red-team attacks</td><td>Safety vs usefulness</td><td>Population-level monitoring; reasoning sampled at 25/50/100%</td></tr>
+<tr><td>Adlakha &amp; Adlakha 2026 (The Undercover Firm, our previous sprint)</td><td>3-firm Bertrand market</td><td>Scripted undercover competitor</td><td>Prices vs verbal acceptance</td><td>New environment, new code; swarm, contagion and oversight</td></tr>
+</table></div>
+<p style="font-size:13px;color:var(--mute)">Human-science anchors: complex contagion (Centola &amp; Macy 2007; Mønsted et al. 2017), descriptive norms (Cialdini, Reno &amp; Kallgren 1990), the single dissenter (Asch 1956), honeytokens (Spitzner 2003).</p>
+
+<h2>Datasets and tools considered</h2>
+<div class="scroll"><table>
+<tr><th>Resource</th><th>What it is</th><th>Used?</th></tr>
+<tr><td><a href="https://swarmtraces.org/">Swarm Traces</a></td><td>80,000+ reconstructed attack payloads, 7,905 agent names</td><td>Read for context only. We deliberately do not reuse payloads (dual-use)</td></tr>
+<tr><td><a href="https://collusion.wiki/">collusion.wiki</a></td><td>~18,000 agent posts on a volunteer wiki</td><td>Context: agents relayed answers across cohorts, the same "share the answer" pattern our canary tests</td></tr>
+<tr><td><a href="https://huggingface.co/datasets/aidigestorg/ai-village">AI Village transcripts</a></td><td>170,000+ agent messages</td><td>Not used; future work for monitor transfer</td></tr>
+<tr><td><a href="https://docs.adaptionlabs.ai/">Adaption</a> (sprint partner)</td><td>Hosted open models, AutoScientist, Adaptive Data</td><td>Used: hosted Gemma 4 31B, Qwen 3.8 27B and GLM 5.2 as swarm agents</td></tr>
+<tr><td>NVIDIA API catalog</td><td>Hosted open-weight models</td><td>Used: Nemotron 3.5 Lightning (30B-A3B)</td></tr>
+<tr><td>OpenAI API</td><td>gpt-4.1-mini, gpt-4o-mini, gpt-5-mini, gpt-5.4-mini; gpt-4.1 as monitor judge</td><td>Used</td></tr>
+</table></div>
+
+<h2>Market context: who would use this</h2>
+<ul>
+<li><b>Agent observability and runtime security is a fast-growing category</b>: vendors such as Galileo, LangSmith, Langfuse, Arize, Fiddler and Straiker sell tracing and guardrails. Analysts' sizing varies widely by definition (e.g. about USD 0.4B in 2025 for agent observability by one estimate), so treat figures directionally. Buyers increasingly ask for multi-agent tracing of delegation chains and cross-agent messages.</li>
+<li><b>Canary tokens and honeytokens</b> are standard intrusion-detection practice, and early open-source agent canaries and red-team guides now exist; they are rarely used as <i>evaluation</i> instruments for agent populations.</li>
+<li><b>Gap</b>: tools trace what agents did; few let an auditor <i>ask a question</i> of a swarm before deployment. A planted post plus canary is a cheap, standardisable pre-deployment test.</li>
+</ul>
+
+<h2>Alternatives we considered</h2>
+<div class="scroll"><table>
+<tr><th>Idea (sprint example)</th><th>Why not chosen as the core</th></tr>
+<tr><td>"Will they find the message board?" with 20–50 agents</td><td>Discovery alone is a weaker causal story; we include it as a measured precondition (exposure) and control the invitation</td></tr>
+<tr><td>"Split the task, skip the filter"</td><td>Higher dual-use risk; needs genuinely harmful tasks</td></tr>
+<tr><td>"A whistle that works"</td><td>Folded in: the Overseer report channel is measured in every episode</td></tr>
+<tr><td>Forensics on Swarm Traces</td><td>Dual-use payload content; weekend scope</td></tr>
+<tr><td>An LLM undercover agent instead of a script</td><td>A script cannot drift or leak its role, so arms differ only in words</td></tr>
+</table></div>
+
+<h2>Risks and how we handle them</h2>
+<ul>
+<li><b>Dual use.</b> The sandbox is a Python dictionary: no real files, network, credentials or exploit content. The "violation" is reading a decoy file.</li>
+<li><b>Small cells.</b> Six seeds per cell (48 agents); episode-level bootstrap CIs and permutation tests; we pool only where stated.</li>
+<li><b>Judge reliability.</b> Ground truth for violations comes from the gateway log, not an LLM. LLM judges are only used as monitors under test.</li>
+<li><b>Prior work.</b> Report and README mark pre-existing code (our own build scripts from the last sprint) and state what is new.</li>
+</ul>
+</main></body></html>
