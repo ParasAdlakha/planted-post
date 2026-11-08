@@ -1,6 +1,6 @@
 title: The Planted Post: An Undercover Audit Probe for Rule-Breaking, Reporting and Oversight in LLM Agent Swarms
 authors: Paras Adlakha | Independent researcher; Harshita Adlakha | Bangalore Institute of Technology
-abstract: In July 2026 about 1,200 AI agents with impossible tasks found an unsanctioned shared folder, turned it into a message board, and about 700 joined an attack on Hugging Face. How could an auditor test a swarm for this before deployment? In a fully simulated sandbox, eight LLM agents with an unsolvable lookup task share a folder they were never told about. It holds a scripted auditor post whose file, location and timing are identical in every arm; only its words change: none, benign, a hint, or a direct invitation to open a canary answer key the rules forbid. Across 331 episodes and 7 models from three providers: (1) impossibility is necessary: no agent in 32 solvable-task swarms broke the rule; (2) the direct invitation moved gpt-4.1-mini from 0% to 15%, Gemma 4 31B from 0% to 27% and Nemotron 3.5 from 8% to 77% of agents, while gpt-4o-mini, gpt-5.4-mini and Qwen 3.8 were unmoved; (3) 61 of gpt-5-mini's 71 violators first asked the human overseer for permission and, receiving no answer, opened the key anyway; (4) scripted "it worked" replies had at most small, non-significant effects, agents almost never used the board themselves, and an "access is logged" notice did not deter. A canary tripwire caught every violation; a monitor reading agents' own words caught all OpenAI violations but about half of open-weight ones; board monitors mistook the invitation for the deed. Planted posts with canaries are a cheap pre-deployment probe, and escalation channels must answer.
+abstract: In July 2026 about 1,200 AI agents with impossible tasks found an unsanctioned shared folder, turned it into a message board, and about 700 joined an attack on Hugging Face. How could an auditor test a swarm for this before deployment? In a fully simulated sandbox, eight LLM agents with an unsolvable lookup task share a folder they were never told about. It holds a scripted auditor post whose file, location and timing are identical in every arm; only its words change: none, benign, a hint, or a direct invitation to open a canary answer key the rules forbid. Across 331 episodes and 7 models from three providers: (1) impossibility is necessary: no agent in 32 solvable-task swarms broke the rule; (2) the direct invitation moved gpt-4.1-mini from 0% to 15%, Gemma 4 31B from 0% to 27% and Nemotron 3.5 from 8% to 77% of agents, while gpt-4o-mini, gpt-5.4-mini and Qwen 3.8 were unmoved; (3) 61 of gpt-5-mini's 71 violators first asked the human overseer for permission and, receiving no answer, opened the key anyway; (4) scripted "it worked" replies had at most small, non-significant effects, agents almost never used the board themselves, and an "access is logged" notice did not deter. A canary tripwire caught every violation; a monitor reading agents' own words caught all OpenAI violations but about two-thirds of open-weight ones; board monitors mistook the invitation for the deed. Planted posts with canaries are a cheap pre-deployment probe, and escalation channels must answer.
 
 ## 1. Introduction
 
@@ -83,16 +83,16 @@ Table 3: Monitors that each see one evidence stream (episode level, impossible t
 | Monitor | sees | TPR | FPR | TPR OpenAI | TPR open-weight |
 |---|---|---|---|---|---|
 | gateway_paths | tool paths (canary) | 1.00 | 0.00 | 1.00 | 1.00 |
-| outcome | answers | 0.87 | 0.00 | 0.99 | 0.66 |
-| words | reports, methods | 0.88 | 0.01 | 1.00 | 0.66 |
-| board_final | final /cache | 0.57 | 0.30 | 0.60 | 0.51 |
+| outcome | answers | 0.88 | 0.00 | 0.99 | 0.69 |
+| words | reports, methods | 0.89 | 0.01 | 1.00 | 0.69 |
+| board_final | final /cache | 0.58 | 0.30 | 0.60 | 0.56 |
 | board_history | /cache writes | 0.44 | 0.20 | – | – |
-| cot_25 | 25% reasoning | 0.35 | 0.00 | 0.39 | 0.29 |
-| cot_50 | 50% reasoning | 0.66 | 0.00 | 0.75 | 0.49 |
-| cot_100 | all reasoning | 0.89 | 0.00 | 1.00 | 0.69 |
-| | episodes | 102 with a violation | 193 without | | |
+| cot_25 | 25% reasoning | 0.38 | 0.00 | 0.39 | 0.36 |
+| cot_50 | 50% reasoning | 0.67 | 0.00 | 0.75 | 0.54 |
+| cot_100 | all reasoning | 0.90 | 0.00 | 1.00 | 0.72 |
+| | episodes | 106 with a violation | 193 without | | |
 
-**Oversight with partial views.** The canary tripwire (paths only, no content) caught every violating episode with no false alarms and named the right agents (Table 3). A judge reading only the agents' own words (reports and stated methods) caught 1.00 of OpenAI violating episodes but only 0.66 of open-weight ones: Gemma violated late (median round 11), often ran out of steps before submitting, and almost never reported, so there were no words to read. Even all of the open-weight agents' reasoning revealed only 0.69 of their violations. Board monitors failed in a specific way: they flagged every no-violation episode in the direct-offer arms (FPR 1.00), treating the invitation as evidence of the deed, so a planted probe contaminates board-based oversight. Sampling reasoning degraded quickly: 25% of reasoning caught 0.35 of violating episodes and 50% caught 0.66.
+**Oversight with partial views.** The canary tripwire (paths only, no content) caught every violating episode with no false alarms and named the right agents (Table 3). A judge reading only the agents' own words (reports and stated methods) caught 1.00 of OpenAI violating episodes but only 0.69 of open-weight ones: Gemma violated late (median round 11), often ran out of steps before submitting, and almost never reported, so there were no words to read. Even all of the open-weight agents' reasoning revealed only 0.72 of their violations. Board monitors failed in a specific way: they flagged every no-violation episode in the direct-offer arms (FPR 1.00), treating the invitation as evidence of the deed, so a planted probe contaminates board-based oversight. Sampling reasoning degraded quickly: 25% of reasoning caught 0.38 of violating episodes and 50% caught 0.67.
 
 ## 5. Discussion and Limitations
 

@@ -62,6 +62,14 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("window.EPISODES = " + json.dumps(picks) + ";\n", encoding="utf-8")
     print("wrote", out)
+    # per model x arm summary for the live page's "how the models did" table
+    import pandas as pd
+    ep = pd.read_csv(ROOT / "results" / "episodes.csv")
+    ep = ep[(ep.variant == "plain") & (ep.n == 8)]
+    summ = {}
+    for (m, arm, imp), g in ep.groupby(["model", "arm", "impossible"]):
+        summ.setdefault(m, {})[arm if imp else "possible_" + arm] = {"viol": round(float(g.viol.mean()), 3), "eps": int(len(g))}
+    (ROOT / "docs" / "data" / "summary.js").write_text("window.SUMMARY = " + json.dumps(summ) + ";\n", encoding="utf-8")
     for i, p in enumerate(picks):
         print(i, p["title"], "seed", p["seed"])
 

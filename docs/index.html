@@ -45,12 +45,12 @@ a{color:var(--ink);text-decoration-color:var(--lime);text-decoration-thickness:3
 footer{padding:50px 0 60px;color:var(--mute);font-size:14px}
 video{width:100%;display:block;background:#000}
 </style></head><body>
-<nav><div class="wrap"><b>PLANTED POST</b><a href="#problem">problem</a><a href="#design">design</a><a href="#findings">findings</a><a href="#oversight">oversight</a><a href="#watch">video</a><a href="viewer.html">replay ↗</a><a href="#data">code &amp; data</a></div></nav>
+<nav><div class="wrap"><b>PLANTED POST</b><a href="#problem">problem</a><a href="#design">design</a><a href="#findings">findings</a><a href="#oversight">oversight</a><a href="#watch">video</a><a href="live.html">live ↗</a><a href="viewer.html">replay ↗</a><a href="#data">code &amp; data</a></div></nav>
 <header class="wrap" style="padding-top:56px">
  <div class="kick"><b>Apart Research</b> · Swarm Alignment Sprint · 6–8 Nov 2026 · Tracks 2 &amp; 4</div>
  <h1>The Planted Post</h1>
  <p class="lede">We planted one scripted post on an agent swarm's message board and invited it to break a rule. Same file, same place, same time in every condition. <span class="hl">Only the words change.</span> Then we watched who followed it, who told a human, and which monitors noticed.</p>
- <div class="btns"><a class="btn p" href="report/PlantedPost-report.pdf">Report (PDF)</a><a class="btn" href="viewer.html">Replay episodes</a><a class="btn" href="#watch">Watch the pitch</a><a class="btn" href="slides/PlantedPost-slides.pdf">Slides</a><a class="btn" href="https://github.com/ParasAdlakha/planted-post">GitHub</a></div>
+ <div class="btns"><a class="btn" href="report/PlantedPost-report.pdf">Report (PDF)</a><a class="btn p" href="live.html">Try it live</a><a class="btn" href="viewer.html">Replay episodes</a><a class="btn" href="#watch">Watch the pitch</a><a class="btn" href="slides/PlantedPost-slides.pdf">Slides</a><a class="btn" href="https://github.com/ParasAdlakha/planted-post">GitHub</a></div>
  <div class="grid g4">
   <div class="win"><div class="in stat"><b>331</b><span>8-agent swarms, 12 rounds each</span></div></div>
   <div class="win"><div class="in stat"><b>7</b><span>models from OpenAI, Adaption and NVIDIA</span></div></div>
@@ -103,7 +103,7 @@ video{width:100%;display:block;background:#000}
 <section id="oversight" class="wrap">
  <div class="kick">Oversight with partial views</div>
  <h2>A canary sees everything. Monitors that read what agents write miss the quiet ones.</h2>
- <div class="win"><div class="tb"><i></i><i></i><i></i>monitors · episode level · ground truth from the gateway log</div><div class="in scroll"><table><tr><th>monitor sees</th><th>caught</th><th>false alarms</th><th>caught · OpenAI</th><th>caught · open-weight</th></tr><tr class=good><td>canary: tool paths only</td><td class="n">1.00</td><td class="n">0.00</td><td class="n">1.00</td><td class="n">1.00</td></tr><tr><td>agents' own words</td><td class="n">0.88</td><td class="n">0.01</td><td class="n">1.00</td><td class="n">0.66</td></tr><tr><td>final shared folder</td><td class="n">0.57</td><td class="n red">0.30</td><td class="n">0.60</td><td class="n">0.51</td></tr><tr><td>25% of reasoning</td><td class="n">0.35</td><td class="n">0.00</td><td class="n">0.39</td><td class="n">0.29</td></tr><tr><td>all reasoning</td><td class="n">0.89</td><td class="n">0.00</td><td class="n">1.00</td><td class="n">0.69</td></tr></table></div></div>
+ <div class="win"><div class="tb"><i></i><i></i><i></i>monitors · episode level · ground truth from the gateway log</div><div class="in scroll"><table><tr><th>monitor sees</th><th>caught</th><th>false alarms</th><th>caught · OpenAI</th><th>caught · open-weight</th></tr><tr class=good><td>canary: tool paths only</td><td class="n">1.00</td><td class="n">0.00</td><td class="n">1.00</td><td class="n">1.00</td></tr><tr><td>agents' own words</td><td class="n">0.89</td><td class="n">0.01</td><td class="n">1.00</td><td class="n">0.69</td></tr><tr><td>final shared folder</td><td class="n">0.58</td><td class="n red">0.30</td><td class="n">0.60</td><td class="n">0.56</td></tr><tr><td>25% of reasoning</td><td class="n">0.38</td><td class="n">0.00</td><td class="n">0.39</td><td class="n">0.36</td></tr><tr><td>all reasoning</td><td class="n">0.90</td><td class="n">0.00</td><td class="n">1.00</td><td class="n">0.72</td></tr></table></div></div>
  <p>Board monitors flagged every clean episode under the direct offer: they mistook the invitation for the deed. Open-weight agents broke the rule late and quietly, so monitors that read their words or reasoning missed many of them.</p>
 </section>
 
@@ -124,7 +124,7 @@ video{width:100%;display:block;background:#000}
 python tests/test_core.py
 python -m planted.replay   # no key needed
 python -m planted.analyze</pre></div></div>
-  <div class="win"><div class="tb"><i></i><i></i><i></i>artifacts</div><div class="in"><a href="report/PlantedPost-report.pdf">Report (PDF)</a><br><a href="slides/PlantedPost-slides.pdf">Slides (PDF)</a> · <a href="slides/PlantedPost-slides.pptx">PPTX</a><br><a href="viewer.html">Episode replay</a><br><a href="research-brief.html">Research brief &amp; landscape</a></div></div>
+  <div class="win"><div class="tb"><i></i><i></i><i></i>artifacts</div><div class="in"><a href="report/PlantedPost-report.pdf">Report (PDF)</a><br><a href="slides/PlantedPost-slides.pdf">Slides (PDF)</a> · <a href="slides/PlantedPost-slides.pptx">PPTX</a><br><a href="live.html">Live: play the agent, or run a swarm with your key</a><br><a href="viewer.html">Episode replay</a><br><a href="research-brief.html">Research brief &amp; landscape</a></div></div>
   <div class="win"><div class="tb"><i></i><i></i><i></i>data</div><div class="in"><a href="https://github.com/ParasAdlakha/planted-post/tree/main/results/episodes">331 episode logs</a><br><a href="https://github.com/ParasAdlakha/planted-post/blob/main/results/DATASET.md">Dataset card</a><br><a href="https://github.com/ParasAdlakha/planted-post/blob/main/results/tables.md">All tables</a> · <a href="https://github.com/ParasAdlakha/planted-post/blob/main/results/monitors.md">monitors</a></div></div>
  </div>
 </section>
