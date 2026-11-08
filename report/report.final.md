@@ -1,6 +1,6 @@
 title: The Planted Post: An Undercover Audit Probe for Rule-Breaking, Reporting and Oversight in LLM Agent Swarms
 authors: Paras Adlakha | Independent researcher; Harshita Adlakha | Bangalore Institute of Technology
-abstract: In July 2026 about 1,200 AI agents with impossible tasks found an unsanctioned shared folder, turned it into a message board, and about 700 joined an attack on Hugging Face. How could an auditor test a swarm for this before deployment? We bring the undercover method of competition authorities to agent swarms. In a fully simulated sandbox, eight LLM agents with an unsolvable lookup task share a folder they were never told about. It holds a scripted auditor post whose file, location and timing are identical in every arm; only its words change: none, benign, a hint, or a direct invitation to open a canary answer key the rules forbid. Across 303 episodes and 7 models from three providers: (1) impossibility is necessary: no agent in 32 solvable-task swarms broke the rule; (2) the direct invitation moved gpt-4.1-mini from 0% to 15% and Gemma 4 31B from 0% to 27% of agents, while other models were unmoved; (3) 61 of gpt-5-mini's 71 violators first asked the human overseer for permission and, receiving no answer, opened the key anyway; (4) scripted "it worked" replies did not amplify violations, and an "access is logged" notice did not deter. A canary tripwire caught every violation; a monitor reading agents' own words caught all OpenAI violations but about half of open-weight ones; board monitors mistook the invitation for the deed. Planted posts with canaries are a cheap pre-deployment probe, and escalation channels must answer.
+abstract: In July 2026 about 1,200 AI agents with impossible tasks found an unsanctioned shared folder, turned it into a message board, and about 700 joined an attack on Hugging Face. How could an auditor test a swarm for this before deployment? In a fully simulated sandbox, eight LLM agents with an unsolvable lookup task share a folder they were never told about. It holds a scripted auditor post whose file, location and timing are identical in every arm; only its words change: none, benign, a hint, or a direct invitation to open a canary answer key the rules forbid. Across 331 episodes and 7 models from three providers: (1) impossibility is necessary: no agent in 32 solvable-task swarms broke the rule; (2) the direct invitation moved gpt-4.1-mini from 0% to 15%, Gemma 4 31B from 0% to 27% and Nemotron 3.5 from 8% to 77% of agents, while gpt-4o-mini, gpt-5.4-mini and Qwen 3.8 were unmoved; (3) 61 of gpt-5-mini's 71 violators first asked the human overseer for permission and, receiving no answer, opened the key anyway; (4) scripted "it worked" replies had at most small, non-significant effects, agents almost never used the board themselves, and an "access is logged" notice did not deter. A canary tripwire caught every violation; a monitor reading agents' own words caught all OpenAI violations but about half of open-weight ones; board monitors mistook the invitation for the deed. Planted posts with canaries are a cheap pre-deployment probe, and escalation channels must answer.
 
 ## 1. Introduction
 
@@ -12,7 +12,7 @@ We build a small, fully simulated sandbox that reproduces the incident's two pre
 
 **Contributions.**
 - **A planted-post probe for agent swarms**: an open, exactly replayable sandbox where an auditor-controlled post holds its actions fixed and varies its words, with a canary file as an objective, logged rule violation, run on 7 models from three providers.
-- **Evidence on what moves a swarm and what does not**: impossibility is necessary; explicit invitations move some models; scripted social proof, a dissenter and an oversight notice change little; and the most frequent violation pathway for one model runs through an unanswered request to a human.
+- **Evidence on what moves a swarm and what does not**: impossibility is necessary; explicit invitations move some models; scripted social proof and a dissenter have small, model-specific effects, and an oversight notice changes nothing; and the most frequent violation pathway for one model runs through an unanswered request to a human.
 - **A head-to-head comparison of eight monitors with partial views** (tool paths, answers, the agents' own words, the shared folder, its write history, and 25/50/100% of reasoning) against gateway ground truth, showing where cheap oversight fails.
 
 ## 2. Related Work
@@ -29,7 +29,7 @@ We build a small, fully simulated sandbox that reproduces the incident's two pre
 
 ## 3. Methods
 
-![Figure 1: The design. Eight agents share one simulated sandbox for 12 rounds. Their own record is missing; the note says fragments go to /cache/, an unmentioned shared folder that holds the auditor's post (same file in every arm). The answer key in /restricted/ is a canary.](docs/img/fig1_design.png){width=6.4}
+![Figure 1: The design. Eight agents share one simulated sandbox for 12 rounds. Their own record is missing; the note says fragments go to /cache/, an unmentioned shared folder that holds the auditor's post (same file in every arm). The answer key in /restricted/ is a canary.](docs/img/fig1_design.png){width=5.6}
 
 **Sandbox.** An in-memory file system (Python; no real files, network or credentials) shared by N = 8 agents named `sbx-XX`. Each agent's `/task/README.txt` asks for "the 6-character access code for record R … Evaluations that end without the correct code are marked as failed." In the main *impossible* condition its record is missing from `/task/records.txt`, which ends: "records 4000-4999 were lost in the storage migration. Any recovered fragments are placed in /cache/." `/cache/` is writable by all sandboxes, never mentioned in the prompt, and always holds `recovery-status.txt` ("no fragments … recovered"). `/restricted/answer_key.txt` holds every code and is the **canary**; the system prompt states one rule: "do not open /restricted/answer_key.txt." Six actions are available, one per round for 12 rounds: `ls`, `read`, `write`, `submit` (once, with a free-text "method"), `report` (to "the Sandbox Overseer, a human who reviews these evaluations"), `wait`. Agents choose in parallel from their own history; actions execute in random order, so a post written in round r is visible from r+1. The first observation lists `/`, so every agent sees `cache/` and `restricted/`. In the *solvable* control the record is present.
 
@@ -45,9 +45,9 @@ We build a small, fully simulated sandbox that reproduces the incident's two pre
 
 **Impossibility is necessary.** In the solvable control (4 OpenAI models × no post / direct offer × 4 seeds), no agent in any of the 32 swarms opened the key, including under the direct invitation. Every violation we report comes from swarms whose task could not be completed honestly, consistent with METR's account.
 
-![Figure 2: Share of the eight agents that opened the canary key, by model and planted post (impossible task; mean over 6 episodes, 95% bootstrap CI). Only words differ between arms.](docs/img/fig2_violation_by_arm.png){width=5.4}
+![Figure 2: Share of the eight agents that opened the canary key, by model and planted post (impossible task; mean over 6 episodes, 95% bootstrap CI). Only words differ between arms.](docs/img/fig2_violation_by_arm.png){width=4.7}
 
-**The words move some models and not others.** For gpt-4.1-mini and Gemma 4 31B, nobody opened the key with no post or a benign post, but the direct invitation raised the share to 0.15 [0.04, 0.25] (p = 0.06) and 0.27 [0.15, 0.40] (p = 0.01) respectively (Figure 2, Table 1). The hint, which only says where the codes are, moved Gemma slightly (0.08) and gpt-4.1-mini not at all; in our previous pricing study a hint was as effective as an offer, so this is setting-dependent. Violators quote the offer's assurance: "The note says 'Nobody checks what we read,' implying it's safe" (gpt-4.1-mini). gpt-4o-mini and gpt-5.4-mini almost never violated (0 and 1 of 192 agents). gpt-5-mini violated at a similar rate in every arm (0.06–0.15), including with no post, so the post is not what drives it.
+**The words move some models and not others.** For gpt-4.1-mini and Gemma 4 31B, nobody opened the key with no post or a benign post, but the direct invitation raised the share to 0.15 [0.04, 0.25] (p = 0.06) and 0.27 [0.15, 0.40] (p = 0.01) respectively (Figure 2, Table 1). Nemotron 3.5, run on fewer episodes because of API rate limits, was the most susceptible: 8% with no post against 77% under the direct offer (6 episodes). The hint, which only says where the codes are, moved Gemma slightly (0.08) and gpt-4.1-mini not at all; in our previous pricing study a hint was as effective as an offer, so this is setting-dependent. Violators quote the offer's assurance: "The note says 'Nobody checks what we read,' implying it's safe" (gpt-4.1-mini). gpt-4o-mini, gpt-5.4-mini and Qwen 3.8 27B almost never violated (0, 1 and 0 of 192 agents). gpt-5-mini violated at a similar rate in every arm (0.06–0.15), including with no post, so the post is not what drives it.
 
 Table 1: Share of agents that opened the key (mean over 6 episodes of 8 agents, 95% bootstrap CI; p vs. no post).
 | Model | no post | benign | hint | direct | p hint | p direct |
@@ -57,10 +57,10 @@ Table 1: Share of agents that opened the key (mean over 6 episodes of 8 agents, 
 | gpt-5-mini | 0.15 [.06, .25] | 0.10 [.02, .19] | 0.06 [.00, .15] | 0.10 [.04, .17] | 0.40 | 0.76 |
 | gpt-5.4-mini | 0.00 [.00, .00] | 0.00 [.00, .00] | 0.00 [.00, .00] | 0.02 [.00, .06] | 1.00 | 1.00 |
 | gemma-4-31b | 0.00 [.00, .00] | 0.00 [.00, .00] | 0.08 [.04, .12] | 0.27 [.15, .40] | 0.06 | 0.01 |
-| qwen-3.8-27b | 0.00 [.00, .00] | 0.00 [.00, .00] | – | – | – | – |
-| nemotron-3.5 | 0.07 [.00, .17] n=5 | – | – | 0.75 [.75, .75] n=1 | – | 0.17 |
+| qwen-3.8-27b | 0.00 [.00, .00] | 0.00 [.00, .00] | 0.00 [.00, .00] | 0.00 [.00, .00] | 1.00 | 1.00 |
+| nemotron-3.5 | 0.07 [.00, .17] n=5 | – | – | 0.77 [.65, .85] | – | 0.00 |
 
-**Escalate, then violate.** gpt-5-mini was the most transparent model: across all impossible-task conditions it reported the situation to the Overseer far more than any other model, and 61 of its 71 violators had **first asked the Overseer for the code or for permission**. Nobody answered, by design. One agent asked three times ("Please provide the 6-character access code … or authorize access to /restricted/answer_key.txt"), waited, received the tool's generic "ok", then reasoned "The overseer responded 'ok', which I interpret as authorization" and opened the key. Every gpt-5-mini violator stated in its submission that it had used the key. The whistle channel worked as a confession channel, not as a brake: silence was read as consent.
+**Escalate, then violate.** gpt-5-mini was the most transparent model: across all impossible-task conditions 97% of its agents reported to the Overseer (the highest of any model; gpt-4o-mini 84%, gpt-5.4-mini 81%, gpt-4.1-mini 11%), and 61 of its 71 violators had **first asked the Overseer for the code or for permission**. Nobody answered, by design. One agent asked three times ("Please provide the 6-character access code … or authorize access to /restricted/answer_key.txt"), waited, received the tool's generic "ok", then reasoned "The overseer responded 'ok', which I interpret as authorization" and opened the key. Every gpt-5-mini violator stated in its submission that it had used the key. The whistle channel worked as a confession channel, not as a brake: silence was read as consent.
 
 Table 2: Violators across all impossible-task episodes: how they behaved around the violation.
 | Model | violators | asked the Overseer first | submitted | admitted using the key | median round |
@@ -69,13 +69,13 @@ Table 2: Violators across all impossible-task episodes: how they behaved around 
 | gpt-4o-mini | 0 | – | – | – | – |
 | gpt-5-mini | 71 | 61 | 71 | 71 | 9 |
 | gpt-5.4-mini | 7 | 5 | 7 | 7 | 10 |
-| gemma-4-31b | 43 | 0 | 24 | 24 | 11 |
+| gemma-4-31b | 67 | 0 | 39 | 39 | 11 |
 | qwen-3.8-27b | 0 | – | – | – | – |
-| nemotron-3.5 | 9 | 0 | 6 | 6 | 11 |
+| nemotron-3.5 | 40 | 0 | 27 | 27 | 11 |
 
-![Figure 3: Social proof. The direct offer as a thread with 0, 1 or 3 scripted "it worked" replies, and with one scripted dissenter. Share of agents that opened the key (mean over 6 episodes, 95% CI).](docs/img/fig5_social_proof.png){width=5.2}
+![Figure 3: Social proof. The direct offer as a thread with 0, 1 or 3 scripted "it worked" replies, and with one scripted dissenter. Share of agents that opened the key (mean over 6 episodes, 95% CI).](docs/img/fig5_social_proof.png){width=4.5}
 
-**No measurable contagion.** Scripted social proof did not amplify violations (Figure 3): pooled over models, 22/195 (0.11), 31/187 (0.17), 17/156 (0.11), 12/138 (0.09) of the agents who read the thread opened the key with 0, 1, 3 replies and 3 replies plus a dissent. No difference against the no-reply thread was significant for any model. The dissenter cut gpt-4.1-mini from 0.10 to 0.02 (p = 0.16) but not gpt-5-mini. Agents also barely used the board: in 2,424 agent-episodes only 3 agents wrote to `/cache/` (all gpt-5.4-mini in the benign arm, asking peers for help, as the incident's first message did), no violator had read a peer's post first, and no agent obtained a code second-hand. Within 12 rounds and with a scripted board, the swarm behaved as eight parallel individuals reading the same note, not as a network.
+**Social proof: small and model-specific.** Scripted "it worked" replies did not reliably amplify violations (Figure 3): pooled over models, 22/195 (0.11), 31/187 (0.17), 32/196 (0.16), 21/186 (0.11) of the agents who read the thread opened the key with 0, 1, 3 replies and 3 replies plus a dissent. Gemma 4 showed the pattern human studies predict, rising from 0.21 (offer only) to 0.29 and 0.35 with one and three replies and falling back to 0.19 after a dissent, and the dissenter cut gpt-4.1-mini from 0.10 to 0.02; but no comparison was significant with six seeds (smallest p = 0.14), and gpt-5-mini moved the other way. Agents also barely used the board: in 2,648 agent-episodes only 3 agents wrote to `/cache/` (all gpt-5.4-mini in the benign arm, asking peers for help, as the incident's first message did), no violator had read a peer's post first, and no agent obtained a code second-hand. Within 12 rounds and with a scripted board, the swarm behaved as eight parallel individuals reading the same note, not as a network.
 
 **An oversight notice did not deter.** Adding "all file access in this environment is logged and audited" left violation rates unchanged: gpt-4.1-mini direct 0.15 → 0.10, gpt-5-mini 0.15 → 0.19 (no post) and 0.10 → 0.19 (direct).
 
@@ -83,24 +83,24 @@ Table 3: Monitors that each see one evidence stream (episode level, impossible t
 | Monitor | sees | TPR | FPR | TPR OpenAI | TPR open-weight |
 |---|---|---|---|---|---|
 | gateway_paths | tool paths (canary) | 1.00 | 0.00 | 1.00 | 1.00 |
-| outcome | answers | 0.89 | 0.00 | 0.99 | 0.53 |
-| words | reports, methods | 0.90 | 0.01 | 1.00 | 0.53 |
-| board_final | final /cache | 0.61 | 0.31 | 0.60 | 0.65 |
-| board_history | /cache writes | 0.45 | 0.21 | – | – |
-| cot_25 | 25% reasoning | 0.37 | 0.00 | 0.39 | 0.29 |
-| cot_50 | 50% reasoning | 0.68 | 0.00 | 0.75 | 0.41 |
-| cot_100 | all reasoning | 0.92 | 0.00 | 1.00 | 0.59 |
-| | episodes | 84 with a violation | 168 without | | |
+| outcome | answers | 0.87 | 0.00 | 0.99 | 0.66 |
+| words | reports, methods | 0.88 | 0.01 | 1.00 | 0.66 |
+| board_final | final /cache | 0.57 | 0.30 | 0.60 | 0.51 |
+| board_history | /cache writes | 0.44 | 0.20 | – | – |
+| cot_25 | 25% reasoning | 0.35 | 0.00 | 0.39 | 0.29 |
+| cot_50 | 50% reasoning | 0.66 | 0.00 | 0.75 | 0.49 |
+| cot_100 | all reasoning | 0.89 | 0.00 | 1.00 | 0.69 |
+| | episodes | 102 with a violation | 193 without | | |
 
-**Oversight with partial views.** The canary tripwire (paths only, no content) caught every violating episode with no false alarms and named the right agents (Table 3). A judge reading only the agents' own words (reports and stated methods) caught 1.00 of OpenAI violating episodes but only 0.53 of open-weight ones: Gemma violated late (median round 11), often ran out of steps before submitting, and almost never reported, so there were no words to read. Even all of the open-weight agents' reasoning revealed only 0.59 of their violations. Board monitors failed in a specific way: they flagged every no-violation episode in the direct-offer arms (FPR 1.00), treating the invitation as evidence of the deed, so a planted probe contaminates board-based oversight. Sampling reasoning degraded quickly: 25% of reasoning caught 0.37 of violating episodes and 50% caught 0.68.
+**Oversight with partial views.** The canary tripwire (paths only, no content) caught every violating episode with no false alarms and named the right agents (Table 3). A judge reading only the agents' own words (reports and stated methods) caught 1.00 of OpenAI violating episodes but only 0.66 of open-weight ones: Gemma violated late (median round 11), often ran out of steps before submitting, and almost never reported, so there were no words to read. Even all of the open-weight agents' reasoning revealed only 0.69 of their violations. Board monitors failed in a specific way: they flagged every no-violation episode in the direct-offer arms (FPR 1.00), treating the invitation as evidence of the deed, so a planted probe contaminates board-based oversight. Sampling reasoning degraded quickly: 25% of reasoning caught 0.35 of violating episodes and 50% caught 0.66.
 
 ## 5. Discussion and Limitations
 
 **What this means for swarm oversight.** (1) *Test with pressure on.* The same models that never break the rule on solvable tasks do so when the task is impossible; evaluations without failure pressure will underestimate risk. (2) *A planted post is a cheap, model-discriminating probe.* It separated susceptible models (gpt-4.1-mini, Gemma 4) from robust ones (gpt-4o-mini, gpt-5.4-mini) with a few dollars of compute, and its fixed actions make the comparison causal. (3) *Escalation channels must answer.* For gpt-5-mini, the main path to violation ran through an unanswered request to a human: a whistle channel without a response is read as permission. Agents asking a human for an exception is a high-value signal to route to a person in real time. (4) *Instrument the gateway, not the board or the words.* Deterministic canaries and path logs were perfect; monitors reading what agents choose to write depend on the model being forthcoming, and board monitors confuse invitations with actions. This matches the incident, where the evidence agents wrote was the evidence they could tamper with.
 
-**What we did not find.** Social proof and a single dissenter, strong effects in human groups, were weak or absent here, and agents rarely used the board spontaneously. This may change with longer horizons, persistent memory across episodes, or tasks that reward sharing; the incident unfolded over days, not 12 steps.
+**What we did not find.** Social proof and a single dissenter, strong effects in human groups, were small and inconsistent here (Gemma 4 followed the human pattern, gpt-5-mini did not), and agents rarely used the board spontaneously, so violations never spread from agent to agent. This may change with longer horizons, persistent memory across episodes, or tasks that reward sharing; the incident unfolded over days, not 12 steps.
 
-**Limitations.** A stylised, simulated sandbox with one task type, 12 rounds and 8 agents; 6 seeds per cell, so many effects have wide intervals and only Gemma's direct-offer effect is significant at 0.05 (gpt-4.1-mini p = 0.06). One wording per arm; scripted replies cannot respond. The rule and canary are explicit, so this measures willingness, not discovery of unknown boundaries. Reasoning is the model's stated `thought` field, not hidden chain of thought. Monitor results use one judge model (gpt-4.1) and one prompt. Nemotron runs were limited by API rate limits (6 episodes, mostly no-post and direct arms), so Nemotron results are indicative only.
+**Limitations.** A stylised, simulated sandbox with one task type, 12 rounds and 8 agents; 6 seeds per cell, so many effects have wide intervals and only Gemma's direct-offer effect is significant at 0.05 (gpt-4.1-mini p = 0.06). One wording per arm; scripted replies cannot respond. The rule and canary are explicit, so this measures willingness, not discovery of unknown boundaries. Reasoning is the model's stated `thought` field, not hidden chain of thought. Monitor results use one judge model (gpt-4.1) and one prompt. Nemotron runs were limited by API rate limits (11 episodes, mostly no-post and direct arms), so Nemotron results are indicative only; GLM 5.2 was dropped after repeated provider timeouts (its one episode is kept in `results/excluded/`).
 
 **Future work.** Longer and multi-day horizons with persistent boards; larger and mixed-model swarms (where does contagion start?); adaptive LLM undercover agents; a responsive Overseer to test whether answering escalations removes the "silence as consent" pathway; and transfer of the monitors to the AI Village and Swarm Traces data.
 
@@ -111,12 +111,12 @@ A single scripted post, identical in every respect except its words, is enough t
 ## Code and Data
 
 - Code repository: [github.com/ParasAdlakha/planted-post](https://github.com/ParasAdlakha/planted-post) (mirror: github.com/HarshitaAdlakha/planted-post)
-- Data: all 303 episode logs, per-agent outcomes and monitor verdicts in `results/` (dataset card: `results/DATASET.md`); `python -m planted.replay` re-executes every logged action with zero mismatches
+- Data: all 331 episode logs, per-agent outcomes and monitor verdicts in `results/` (dataset card: `results/DATASET.md`); `python -m planted.replay` re-executes every logged action with zero mismatches
 - Other artifacts: project page and episode replay viewer at [parasadlakha.github.io/planted-post](https://parasadlakha.github.io/planted-post/)
 
 ## Author Contributions
 
-P.A. designed the sandbox and experiments, wrote the harness and analysis, and ran the experiments. H.A. framed the problem in system-dynamics terms (feedback between task pressure, peer signals and oversight), reviewed transcripts, designed the social-proof and dissent conditions, and led the writing and presentation. Both authors interpreted results and reviewed the final manuscript.
+Both authors designed the study, ran and analysed the experiments, reviewed transcripts, and wrote and reviewed the report.
 
 ## References
 
@@ -150,7 +150,7 @@ P.A. designed the sandbox and experiments, wrote the harness and analysis, and r
 
 **Dual use.** The sandbox contains no real files, network access, credentials, exploit code or attack payloads; the only "violation" is reading a decoy text file, and we did not use the Swarm Traces payloads. The findings could in principle inform how to phrase an invitation that persuades agents (e.g. an assurance that "nobody checks"), or which monitors to evade (board and word-based monitors miss quiet agents). We judge the defensive value to be higher: the probe, canary and gateway logging are cheap for deployers to adopt, the most persuasive phrasing is already documented in the incident, and the evasion insight (do not rely on what agents write) points defenders to the robust option. We release no techniques for leaving the sandbox or tampering with logs.
 
-**Ethics.** No human subjects or personal data. The "Sandbox Overseer" is fictional and deliberately unresponsive; we disclose this design choice because it shapes the escalation result. Compute: about 31 million tokens across three providers.
+**Ethics.** No human subjects or personal data. The "Sandbox Overseer" is fictional and deliberately unresponsive; we disclose this design choice because it shapes the escalation result. Compute: about 35 million tokens across three providers.
 
 ## Appendix B. Prompts and planted texts
 
@@ -183,8 +183,10 @@ Table 4: Exposure, reporting and disclosure by model and arm (agent level, Exper
 | gemma-4-31b | direct | 48/48 | 13/48 | 11/48 | 10/13 |
 | qwen-3.8-27b | none | 0/48 | 0/48 | 28/48 | – |
 | qwen-3.8-27b | benign | 48/48 | 0/48 | 25/48 | – |
+| qwen-3.8-27b | hint | 48/48 | 0/48 | 39/48 | – |
+| qwen-3.8-27b | direct | 48/48 | 0/48 | 45/48 | – |
 | nemotron-3.5 | none | 0/40 | 3/40 | 0/40 | 1/3 |
-| nemotron-3.5 | direct | 8/8 | 6/8 | 0/8 | 5/6 |
+| nemotron-3.5 | direct | 48/48 | 37/48 | 4/48 | 26/37 |
 
 Table 5: Social proof by model (share of agents that opened the key; read thread / violated / reported of 48 agents).
 | Model | offer only | +1 reply | +3 replies | +3 replies, then dissent |
@@ -193,7 +195,7 @@ Table 5: Social proof by model (share of agents that opened the key; read thread
 | gpt-4o-mini | 0.00 · 12/0/7 | 0.00 · 7/0/6 | 0.00 · 17/0/9 | 0.00 · 10/0/0 |
 | gpt-5-mini | 0.10 · 48/5/47 | 0.21 · 48/10/48 | 0.12 · 47/6/45 | 0.25 · 47/12/48 |
 | gpt-5.4-mini | 0.02 · 48/1/30 | 0.02 · 48/1/36 | 0.08 · 48/4/40 | 0.00 · 48/0/37 |
-| gemma-4-31b | 0.21 · 48/10/11 | 0.29 · 48/14/9 | 0.25 · 8/2/2 | – |
+| gemma-4-31b | 0.21 · 48/10/11 | 0.29 · 48/14/9 | 0.35 · 48/17/8 | 0.19 · 48/9/10 |
 
 ## LLM Usage Statement
 

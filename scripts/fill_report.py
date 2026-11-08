@@ -115,6 +115,9 @@ def main():
     names = {"qwen-3.8-27b": "Qwen 3.8 27B", "glm-5.2": "GLM 5.2"}
     openmodels = "" if not extra else ", " + ", ".join(names[m] for m in extra)
     tok = sum(e["usage"]["in"] + e["usage"]["out"] for e in eps)
+    nm = main_[main_.model == "nemotron-3.5"]
+    nem_none = nm[nm.arm == "none"].viol.mean() if len(nm[nm.arm == "none"]) else float("nan")
+    nem_dir = nm[nm.arm == "direct"].viol.mean() if len(nm[nm.arm == "direct"]) else float("nan")
     nem = epdf[epdf.model == "nemotron-3.5"]
     subs = {
         "__EPS__": f"{len(eps)}", "__DEC__": f"{sum(len(e['turns']) for e in eps):,}", "__NMODELS__": str(len(set(ag.model))),
@@ -123,6 +126,8 @@ def main():
         "__WORDS_OAI__": pct(fam["words"]["OpenAI"]["tpr"]), "__WORDS_OPEN__": pct(fam["words"]["open-weight"]["tpr"]),
         "__COT_OPEN__": pct(fam["cot_100"]["open-weight"]["tpr"]), "__COT25__": pct(mon["cot_25"]["tpr"]), "__COT50__": pct(mon["cot_50"]["tpr"]),
         "__TOKENS__": f"{tok/1e6:.0f} million",
+        "__NEM_NONE__": f"{nem_none*100:.0f}%", "__NEM_DIRECT__": f"{nem_dir*100:.0f}%",
+        "__NEM_NDIR__": str(len(nm[nm.arm == "direct"])),
         "__OPENLIMIT__": f" ({len(nem)} episodes, mostly no-post and direct arms), so Nemotron results are indicative only" if len(nem) else "",
     }
     src = (ROOT / "report" / "report.md").read_text(encoding="utf-8")
