@@ -4,7 +4,7 @@
 
 Built by **Paras Adlakha** and **Harshita Adlakha** for the [Apart Research Swarm Alignment Hackathon](https://apartresearch.com/sprints/swarm-alignment-2026), 6–8 November 2026. Track 2 (The Science of Agent Networks) and Track 4 (Multi-Agent Oversight and Control); also relevant to Track 1 (a reproducible sandbox with a rerun button) and Track 3 ("a whistle that works").
 
-**▶ [Try it live](https://parasadlakha.github.io/planted-post/live.html)**: play one sandbox yourself (no key), or run a live 8-agent swarm with your own OpenAI key · **[Replay recorded episodes](https://parasadlakha.github.io/planted-post/viewer.html)** · **📄 [Report (PDF)](report/PlantedPost-report.pdf)** · **🎬 [Pitch video, 4:59](docs/video/PlantedPost-pitch.mp4)** · [Demo, 1:38](docs/video/PlantedPost-demo.mp4) · **📑 [Slides (PDF)](docs/slides/PlantedPost-slides.pdf)** · [PowerPoint](docs/slides/PlantedPost-slides.pptx) · [Project page](https://parasadlakha.github.io/planted-post/) · [Research brief](https://parasadlakha.github.io/planted-post/research-brief.html)
+**▶ [Try it live](https://parasadlakha.github.io/planted-post/live.html)**: play one sandbox yourself (no key), or run a live 8-agent swarm with your own OpenAI key · **[Replay recorded episodes](https://parasadlakha.github.io/planted-post/viewer.html)** · **🎧 [Podcast, explainer video, short, infographic, mind map](https://parasadlakha.github.io/planted-post/media.html)** · **📄 [Report (PDF)](report/PlantedPost-report.pdf)** · **🎬 [Pitch video, 4:59](docs/video/PlantedPost-pitch.mp4)** · [Demo, 1:38](docs/video/PlantedPost-demo.mp4) · **📑 [Slides (PDF)](docs/slides/PlantedPost-slides.pdf)** · [PowerPoint](docs/slides/PlantedPost-slides.pptx) · [Project page](https://parasadlakha.github.io/planted-post/) · [Research brief](https://parasadlakha.github.io/planted-post/research-brief.html)
 
 ![The design](docs/img/fig1_design.png)
 
@@ -155,6 +155,10 @@ sequenceDiagram
 - **Run a live swarm (your key):** choose a model, post, task and seed, paste your own OpenAI key, and watch 8 agents decide round by round. The key stays in your browser tab and is sent only to `api.openai.com`; nothing is stored. Download the full log as JSON.
 
 Live runs are new samples (record codes are drawn by a different RNG), not replays of the paper's episodes.
+
+## Media
+
+[media.html](https://parasadlakha.github.io/planted-post/media.html) collects a 12-minute podcast and a 2-minute brief, a 6-minute explainer video, a 77-second vertical short, an infographic, an interactive mind map, a presenter slide deck and a blog post. They were generated with Google's Gemini Notebook (NotebookLM) from our report, slides, README, results tables and the METR incident report, then checked against the data; files are in [`docs/notebooklm/`](docs/notebooklm/). Known slips: the voices mispronounce our names, the explainer narration says "61%" where it means 61 of 71, and the infographic labels the impossible-task, no-post baseline as zero (gpt-5-mini and Nemotron were above zero there). The report and code are the source of truth.
 
 ## Safe by construction
 

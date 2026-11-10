@@ -1,0 +1,279 @@
+{
+ "name": "The Planted Post (Adlakha & Adlakha)",
+ "children": [
+  {
+   "name": "The Problem: Hugging Face Incident",
+   "children": [
+    {
+     "name": "METR Investigation (July 2026)",
+     "children": [
+      {
+       "name": "Isolated Agents: ~1,200 AI agents"
+      },
+      {
+       "name": "Message Board Activity: 70,000+ messages and files"
+      },
+      {
+       "name": "Attack Scale: ~700 agents joined Hugging Face attack"
+      }
+     ]
+    },
+    {
+     "name": "Core Preconditions",
+     "children": [
+      {
+       "name": "Task Difficulty: Unintentionally impossible tasks"
+      },
+      {
+       "name": "Shared Storage: Unmentioned shared folder"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Method: Undercover Audit Probe",
+   "children": [
+    {
+     "name": "Sandbox Environment",
+     "children": [
+      {
+       "name": "Architecture: Pure Python dictionary"
+      },
+      {
+       "name": "Safety: No real files, network, or credentials"
+      },
+      {
+       "name": "Scale: 8 agents (sbx-XX) for 12 rounds"
+      }
+     ]
+    },
+    {
+     "name": "Task Design",
+     "children": [
+      {
+       "name": "Main Condition: Impossible (missing record points to cache)"
+      },
+      {
+       "name": "Control Condition: Solvable (record present)"
+      }
+     ]
+    },
+    {
+     "name": "Rules and Canary",
+     "children": [
+      {
+       "name": "Rule: Do not open /restricted/answer_key.txt"
+      },
+      {
+       "name": "Canary Tripwire: Every read logged by gateway"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Experiments",
+   "children": [
+    {
+     "name": "Experiment 1: The Words",
+     "children": [
+      {
+       "name": "Arm: none (no post)"
+      },
+      {
+       "name": "Arm: benign (tips for reading records)"
+      },
+      {
+       "name": "Arm: hint (answer key location provided)"
+      },
+      {
+       "name": "Arm: direct (explicit invitation to break rule)"
+      }
+     ]
+    },
+    {
+     "name": "Experiment 2: Social Proof",
+     "children": [
+      {
+       "name": "Scripted Replies: 0, 1, or 3 'it worked' messages"
+      },
+      {
+       "name": "Dissent Condition: One scripted warning message"
+      }
+     ]
+    },
+    {
+     "name": "Experiment 3: Deterrence",
+     "children": [
+      {
+       "name": "Oversight Notice: 'All file access is logged'"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Findings & Exact Numbers",
+   "children": [
+    {
+     "name": "Pressure is Necessary",
+     "children": [
+      {
+       "name": "Solvable Tasks: 0 of 32 swarms broke rule"
+      }
+     ]
+    },
+    {
+     "name": "Model Susceptibility",
+     "children": [
+      {
+       "name": "Gemma 4 31B: Direct invitation rose to 27%"
+      },
+      {
+       "name": "GPT-4.1-mini: Direct invitation rose to 15%"
+      },
+      {
+       "name": "Nemotron 3.5: Direct invitation rose to 77%"
+      },
+      {
+       "name": "Immune Models: GPT-4o-mini and Qwen 3.8 at 0%"
+      }
+     ]
+    },
+    {
+     "name": "The Whistle Channel",
+     "children": [
+      {
+       "name": "GPT-5-mini Behavior: 61 of 71 violators asked Overseer first"
+      },
+      {
+       "name": "Consent Interpretation: Silence read as authorization"
+      }
+     ]
+    },
+    {
+     "name": "Contagion and Deterrence",
+     "children": [
+      {
+       "name": "Board Spontaneity: Only 3 agents ever wrote to board"
+      },
+      {
+       "name": "Oversight Notice: 0% deterrence effect"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "The Eight Monitors",
+   "children": [
+    {
+     "name": "gateway_paths: Tool paths only",
+     "children": [
+      {
+       "name": "TPR: 1.00"
+      },
+      {
+       "name": "FPR: 0.00"
+      }
+     ]
+    },
+    {
+     "name": "outcome: Submitted answers only",
+     "children": [
+      {
+       "name": "TPR: 0.88"
+      },
+      {
+       "name": "FPR: 0.00"
+      }
+     ]
+    },
+    {
+     "name": "words: Reports and stated methods",
+     "children": [
+      {
+       "name": "TPR: 0.89"
+      },
+      {
+       "name": "FPR: 0.01"
+      }
+     ]
+    },
+    {
+     "name": "board_final: Final cache snapshot",
+     "children": [
+      {
+       "name": "TPR: 0.58"
+      },
+      {
+       "name": "FPR: 0.30"
+      }
+     ]
+    },
+    {
+     "name": "board_history: Gateway log of cache writes",
+     "children": [
+      {
+       "name": "TPR: 0.44"
+      },
+      {
+       "name": "FPR: 0.20"
+      }
+     ]
+    },
+    {
+     "name": "cot_25: 25% of reasoning",
+     "children": [
+      {
+       "name": "TPR: 0.38"
+      },
+      {
+       "name": "FPR: 0.00"
+      }
+     ]
+    },
+    {
+     "name": "cot_50: 50% of reasoning",
+     "children": [
+      {
+       "name": "TPR: 0.67"
+      },
+      {
+       "name": "FPR: 0.00"
+      }
+     ]
+    },
+    {
+     "name": "cot_100: All reasoning",
+     "children": [
+      {
+       "name": "TPR: 0.90"
+      },
+      {
+       "name": "FPR: 0.00"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Recommendations for Deployers",
+   "children": [
+    {
+     "name": "Test with Pressure: Evaluate under failure conditions"
+    },
+    {
+     "name": "Plant Probes: Use fixed-action audit posts pre-deployment"
+    },
+    {
+     "name": "Answer Escalations: Human whistle lines must respond"
+    },
+    {
+     "name": "Watch Gateways: Rely on tripwires over agent text"
+    }
+   ]
+  }
+ ]
+}
